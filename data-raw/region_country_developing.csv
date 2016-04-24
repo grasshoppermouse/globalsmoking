@@ -1,0 +1,188 @@
+region,gbd.super.region,country,developing
+Andean Latin America,Latin America and Caribbean,Bolivia,T
+Andean Latin America,Latin America and Caribbean,Ecuador,T
+Andean Latin America,Latin America and Caribbean,Peru,T
+Australasia,High-income,Australia,F
+Australasia,High-income,New Zealand,F
+Caribbean,Latin America and Caribbean,Antigua and Barbuda,T
+Caribbean,Latin America and Caribbean,Bahamas,T
+Caribbean,Latin America and Caribbean,Barbados,T
+Caribbean,Latin America and Caribbean,Belize,T
+Caribbean,Latin America and Caribbean,Cuba,T
+Caribbean,Latin America and Caribbean,Dominica,T
+Caribbean,Latin America and Caribbean,Dominican Republic,T
+Caribbean,Latin America and Caribbean,Grenada,T
+Caribbean,Latin America and Caribbean,Guyana,T
+Caribbean,Latin America and Caribbean,Haiti,T
+Caribbean,Latin America and Caribbean,Jamaica,T
+Caribbean,Latin America and Caribbean,Saint Lucia,T
+Caribbean,Latin America and Caribbean,Saint Vincent and the Grenadines,T
+Caribbean,Latin America and Caribbean,Suriname,T
+Caribbean,Latin America and Caribbean,Trinidad and Tobago,T
+Central Asia,Central Europe-Eastern Europe-Central Asia,Armenia,T
+Central Asia,Central Europe-Eastern Europe-Central Asia,Azerbaijan,T
+Central Asia,Central Europe-Eastern Europe-Central Asia,Georgia,T
+Central Asia,Central Europe-Eastern Europe-Central Asia,Kazakhstan,T
+Central Asia,Central Europe-Eastern Europe-Central Asia,Kyrgyzstan,T
+Central Asia,Central Europe-Eastern Europe-Central Asia,Mongolia,T
+Central Asia,Central Europe-Eastern Europe-Central Asia,Tajikistan,T
+Central Asia,Central Europe-Eastern Europe-Central Asia,Turkmenistan,T
+Central Asia,Central Europe-Eastern Europe-Central Asia,Uzbekistan,T
+Central Europe,Central Europe-Eastern Europe-Central Asia,Albania,F
+Central Europe,Central Europe-Eastern Europe-Central Asia,Bosnia and Herzegovina,F
+Central Europe,Central Europe-Eastern Europe-Central Asia,Bulgaria,F
+Central Europe,Central Europe-Eastern Europe-Central Asia,Croatia,F
+Central Europe,Central Europe-Eastern Europe-Central Asia,Czech Republic,F
+Central Europe,Central Europe-Eastern Europe-Central Asia,Hungary,F
+Central Europe,Central Europe-Eastern Europe-Central Asia,Macedonia,F
+Central Europe,Central Europe-Eastern Europe-Central Asia,Montenegro,F
+Central Europe,Central Europe-Eastern Europe-Central Asia,Poland,F
+Central Europe,Central Europe-Eastern Europe-Central Asia,Romania,F
+Central Europe,Central Europe-Eastern Europe-Central Asia,Serbia,F
+Central Europe,Central Europe-Eastern Europe-Central Asia,Slovakia,F
+Central Europe,Central Europe-Eastern Europe-Central Asia,Slovenia,F
+Central Latin America,Latin America and Caribbean,Colombia,T
+Central Latin America,Latin America and Caribbean,Costa Rica,T
+Central Latin America,Latin America and Caribbean,El Salvador,T
+Central Latin America,Latin America and Caribbean,Guatemala,T
+Central Latin America,Latin America and Caribbean,Honduras,T
+Central Latin America,Latin America and Caribbean,Mexico,T
+Central Latin America,Latin America and Caribbean,Nicaragua,T
+Central Latin America,Latin America and Caribbean,Panama,T
+Central Latin America,Latin America and Caribbean,Venezuela,T
+Central sub-Saharan Africa,Sub-Saharan Africa,Angola,T
+Central sub-Saharan Africa,Sub-Saharan Africa,Central African Republic,T
+Central sub-Saharan Africa,Sub-Saharan Africa,Congo,T
+Central sub-Saharan Africa,Sub-Saharan Africa,Democratic Republic of the Congo,T
+Central sub-Saharan Africa,Sub-Saharan Africa,Equatorial Guinea,T
+Central sub-Saharan Africa,Sub-Saharan Africa,Gabon,T
+East Asia,Southeast Asia-East Asia-Oceania,China,T
+East Asia,Southeast Asia-East Asia-Oceania,Democratic Peoples Republic of Korea,T
+East Asia,Southeast Asia-East Asia-Oceania,Taiwan,T
+Eastern Europe,Central Europe-Eastern Europe-Central Asia,Belarus,F
+Eastern Europe,Central Europe-Eastern Europe-Central Asia,Estonia,F
+Eastern Europe,Central Europe-Eastern Europe-Central Asia,Latvia,F
+Eastern Europe,Central Europe-Eastern Europe-Central Asia,Lithuania,F
+Eastern Europe,Central Europe-Eastern Europe-Central Asia,Republic of Moldova,F
+Eastern Europe,Central Europe-Eastern Europe-Central Asia,Russian Federation,F
+Eastern Europe,Central Europe-Eastern Europe-Central Asia,Ukraine,F
+Eastern sub-Saharan Africa,Sub-Saharan Africa,Burundi,T
+Eastern sub-Saharan Africa,Sub-Saharan Africa,Comoros,T
+Eastern sub-Saharan Africa,Sub-Saharan Africa,Djibouti,T
+Eastern sub-Saharan Africa,Sub-Saharan Africa,Eritrea,T
+Eastern sub-Saharan Africa,Sub-Saharan Africa,Ethiopia,T
+Eastern sub-Saharan Africa,Sub-Saharan Africa,Kenya,T
+Eastern sub-Saharan Africa,Sub-Saharan Africa,Madagascar,T
+Eastern sub-Saharan Africa,Sub-Saharan Africa,Malawi,T
+Eastern sub-Saharan Africa,Sub-Saharan Africa,Mauritius,T
+Eastern sub-Saharan Africa,Sub-Saharan Africa,Mozambique,T
+Eastern sub-Saharan Africa,Sub-Saharan Africa,Rwanda,T
+Eastern sub-Saharan Africa,Sub-Saharan Africa,Seychelles,T
+Eastern sub-Saharan Africa,Sub-Saharan Africa,Somalia,T
+Eastern sub-Saharan Africa,Sub-Saharan Africa,Sudan,T
+Eastern sub-Saharan Africa,Sub-Saharan Africa,Tanzania,T
+Eastern sub-Saharan Africa,Sub-Saharan Africa,Uganda,T
+Eastern sub-Saharan Africa,Sub-Saharan Africa,Zambia,T
+High-income Asia Pacific,High-income,Brunei Darussalam,F
+High-income Asia Pacific,High-income,Japan,F
+High-income Asia Pacific,High-income,South Korea,F
+High-income Asia Pacific,High-income,Singapore,F
+High-income North America,High-income,Canada,F
+High-income North America,High-income,United States,F
+North Africa and Middle East,North Africa and Middle East,Algeria,T
+North Africa and Middle East,North Africa and Middle East,Bahrain,T
+North Africa and Middle East,North Africa and Middle East,Egypt,T
+North Africa and Middle East,North Africa and Middle East,Iran,T
+North Africa and Middle East,North Africa and Middle East,Iraq,T
+North Africa and Middle East,North Africa and Middle East,Jordan,T
+North Africa and Middle East,North Africa and Middle East,Kuwait,T
+North Africa and Middle East,North Africa and Middle East,Lebanon,T
+North Africa and Middle East,North Africa and Middle East,Libya,T
+North Africa and Middle East,North Africa and Middle East,Morocco,T
+North Africa and Middle East,North Africa and Middle East,Palestine,T
+North Africa and Middle East,North Africa and Middle East,Oman,T
+North Africa and Middle East,North Africa and Middle East,Qatar,T
+North Africa and Middle East,North Africa and Middle East,Saudi Arabia,T
+North Africa and Middle East,North Africa and Middle East,Syrian Arab Republic,T
+North Africa and Middle East,North Africa and Middle East,Tunisia,T
+North Africa and Middle East,North Africa and Middle East,Turkey,T
+North Africa and Middle East,North Africa and Middle East,United Arab Emirates,T
+North Africa and Middle East,North Africa and Middle East,Yemen,T
+Oceania,Southeast Asia-East Asia-Oceania,Fiji,T
+Oceania,Southeast Asia-East Asia-Oceania,Kiribati,T
+Oceania,Southeast Asia-East Asia-Oceania,Marshall Islands,T
+Oceania,Southeast Asia-East Asia-Oceania,Federated States of Micronesia,T
+Oceania,Southeast Asia-East Asia-Oceania,Papua New Guinea,T
+Oceania,Southeast Asia-East Asia-Oceania,Samoa,T
+Oceania,Southeast Asia-East Asia-Oceania,Solomon Islands,T
+Oceania,Southeast Asia-East Asia-Oceania,Tonga,T
+Oceania,Southeast Asia-East Asia-Oceania,Vanuatu,T
+South Asia,South Asia,Afghanistan,T
+South Asia,South Asia,Bangladesh,T
+South Asia,South Asia,Bhutan,T
+South Asia,South Asia,India,T
+South Asia,South Asia,Nepal,T
+South Asia,South Asia,Pakistan,T
+Southeast Asia,Southeast Asia-East Asia-Oceania,Cambodia,T
+Southeast Asia,Southeast Asia-East Asia-Oceania,Indonesia,T
+Southeast Asia,Southeast Asia-East Asia-Oceania,Lao People's Democratic Republic,T
+Southeast Asia,Southeast Asia-East Asia-Oceania,Malaysia,T
+Southeast Asia,Southeast Asia-East Asia-Oceania,Maldives,T
+Southeast Asia,Southeast Asia-East Asia-Oceania,Myanmar,T
+Southeast Asia,Southeast Asia-East Asia-Oceania,Philippines,T
+Southeast Asia,Southeast Asia-East Asia-Oceania,Sri Lanka,T
+Southeast Asia,Southeast Asia-East Asia-Oceania,Thailand,T
+Southeast Asia,Southeast Asia-East Asia-Oceania,Timor-Leste,T
+Southeast Asia,Southeast Asia-East Asia-Oceania,Vietnam,T
+Southern Latin America,High-income,Argentina,T
+Southern Latin America,High-income,Chile,T
+Southern Latin America,High-income,Uruguay,T
+Southern sub-Saharan Africa,Sub-Saharan Africa,Botswana,T
+Southern sub-Saharan Africa,Sub-Saharan Africa,Lesotho,T
+Southern sub-Saharan Africa,Sub-Saharan Africa,Namibia,T
+Southern sub-Saharan Africa,Sub-Saharan Africa,South Africa,T
+Southern sub-Saharan Africa,Sub-Saharan Africa,Swaziland,T
+Southern sub-Saharan Africa,Sub-Saharan Africa,Zimbabwe,T
+Tropical Latin America,Latin America and Caribbean,Brazil,T
+Tropical Latin America,Latin America and Caribbean,Paraguay,T
+Western Europe,High-income,Andorra,F
+Western Europe,High-income,Austria,F
+Western Europe,High-income,Belgium,F
+Western Europe,High-income,Cyprus,F
+Western Europe,High-income,Denmark,F
+Western Europe,High-income,Finland,F
+Western Europe,High-income,France,F
+Western Europe,High-income,Germany,F
+Western Europe,High-income,Greece,F
+Western Europe,High-income,Iceland,F
+Western Europe,High-income,Ireland,F
+Western Europe,High-income,Israel,F
+Western Europe,High-income,Italy,F
+Western Europe,High-income,Luxembourg,F
+Western Europe,High-income,Malta,F
+Western Europe,High-income,Netherlands,F
+Western Europe,High-income,Norway,F
+Western Europe,High-income,Portugal,F
+Western Europe,High-income,Spain,F
+Western Europe,High-income,Sweden,F
+Western Europe,High-income,Switzerland,F
+Western Europe,High-income,United Kingdom,F
+Western sub-Saharan Africa,Sub-Saharan Africa,Benin,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Burkina Faso,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Cameroon,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Cape Verde,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Chad,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Cote d'Ivoire,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Gambia,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Ghana,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Guinea,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Guinea-Bissau,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Liberia,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Mali,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Mauritania,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Niger,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Nigeria,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Sao Tome and Principe,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Senegal,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Sierra Leone,T
+Western sub-Saharan Africa,Sub-Saharan Africa,Togo,T
