@@ -4,38 +4,69 @@
 #+ load, warning=F, message=F
 
 library(devtools)
-library(dplyr)
-library(tidyr)
+library(tidyverse)
 library(reshape2)
 library(XML)
 library(readxl)
 library(haven)
+library(countrycode)
 
 ### Read data ###
 
-# iso 3 letter country designations
+# iso 2 and 3 letter country designations
 # https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes/tree/master/slim-3
 
-iso3 = read.csv("data-raw/slim-3.csv", stringsAsFactors=FALSE)
-iso3 = dplyr::rename(iso3, iso3=alpha.3)
+iso2 <- read.csv("data-raw/slim-2.csv", stringsAsFactors=FALSE)
+iso2 <- dplyr::rename(iso2, iso2=alpha.2)
+
+iso3 <- read.csv("data-raw/slim-3.csv", stringsAsFactors=FALSE)
+iso3 <- dplyr::rename(iso3, iso3=alpha.3)
+
+iso3 <- left_join(iso3, iso2[-1]) %>% select(name, country.code, iso2, iso3)
 
 # Developing countries as defined in the GBD studies
-dev = read.csv('data-raw/region_country_developing.csv', stringsAsFactors=FALSE)
-dev = left_join(dev, iso3, by=c('country'='name'))
+developing <- read.csv('data-raw/region_country_developing.csv', stringsAsFactors=FALSE)
+
+developing$iso3 <- countrycode(developing$country, 'country.name', 'iso3c')
+
+# Our reference smoking data
+
+smoking_age_sex <- read_excel('data-raw/UW_Age_sex tobacco prevalence.xlsx')
+
+# http://ghdx.healthdata.org/record/global-smoking-prevalence-and-cigarette-consumption-1980-2012
+# http://www.healthdata.org/sites/default/files/files/data_for_download/2014/Tobacco_January_2014_data.xlsx
+
+ng_smoking <- read.delim("data-raw/Ng_Tobacco_January_2014_data.txt", quote="", stringsAsFactors=FALSE)
+ng_smoking = rename(ng_smoking, iso3=iso)
 
 # Total fertility rates
 
-tfr2015 = read_excel('data-raw/WPP2015_FERT_F04_TOTAL_FERTILITY.XLS', skip = 16)
-tfr2015$Index <- NULL
-tfr2015$Variant <- NULL
-tfr2015$Notes <- NULL
+tfr = read_excel('data-raw/WPP2015_FERT_F04_TOTAL_FERTILITY.XLS', skip = 16)
+tfr$Index <- NULL
+tfr$Variant <- NULL
+tfr$Notes <- NULL
 
-names(tfr2015) <- c('country', 'iso_code', paste0('tfr', seq(1950, 2010, 5)))
+names(tfr) <- c('country', 'iso_code', paste0('tfr', seq(1950, 2010, 5)))
 
-tfr2015 <-
-    tfr2015 %>%
-    filter(iso_code %in% iso3$country.code) %>% # Strip regional values (e.g. "Africa")
-    left_join(iso3[, -1], by=c('iso_code'='country.code')) # Add iso3 codes
+# Start using countrycode package instead of iso3 data frame. Haven't converting everything yet.
+
+tfr$iso3 <- countrycode(tfr$iso_code, 'un', 'iso3c')
+
+# Taiwan is listed as "Other non-specified areas"
+tfr$country[tfr$country == "Other non-specified areas"] <- 'Taiwan'
+tfr$iso3[tfr$country == 'Taiwan'] <- countrycode('Taiwan', 'country.name', 'iso3c')
+
+tfr <-
+    tfr %>%
+    dplyr::filter(!is.na(iso3)) %>%
+    dplyr::select(country, iso3, tfr1950:tfr2010)
+
+# Old
+# tfr2 <-
+#     tfr %>%
+#     filter(iso_code %in% iso3$country.code) %>% # Strip regional values (e.g. "Africa")
+#     left_join(iso3[, -1], by=c('iso_code'='country.code')) %>% # Add iso3 codes
+#     dplyr::select(country, iso3, tfr1950:tfr2010)
 
 # Missing TFR values for 2010-2015
 # Andorra: 1.3 (http://data.un.org/CountryProfile.aspx?crName=Andorra)
@@ -43,32 +74,41 @@ tfr2015 <-
 # Marshall Islands: 4.50 births per woman (2007)
 
 # Convert to long
-tfr2015long <-
-    tfr2015 %>%
+tfrlong <-
+    tfr %>%
     dplyr::select(tfr1950:tfr2005, iso3) %>%
     gather(year, tfr, tfr1950:tfr2005) %>%
     mutate(year = extract_numeric(year))
 
-# Age specific fertility rates
+# Age specific fertility rates 1950-2015
 
-asfr2015 = read_excel('data-raw/WPP2015_FERT_F07_AGE_SPECIFIC_FERTILITY.XLS', skip = 16)
-asfr2015$Variant <- NULL
-asfr2015$Index <- NULL
-asfr2015$Notes <- NULL
+asfr = read_excel('data-raw/WPP2015_FERT_F07_AGE_SPECIFIC_FERTILITY.XLS', skip = 16)
+asfr$Variant <- NULL
+asfr$Index <- NULL
+asfr$Notes <- NULL
 
-names(asfr2015)[1:3] <- c('country', 'iso_code', 'year')
+names(asfr)[1:3] <- c('country', 'iso_code', 'year')
 
-asfr2015 <-
-    asfr2015 %>%
-    filter(iso_code %in% iso3$country.code) %>% # Strip regional values (e.g. "Africa")
-    left_join(iso3[, -1], by=c('iso_code'='country.code')) # Add iso3 codes
+asfr$iso3 <- countrycode(asfr$iso_code, 'un', 'iso3c')
+
+# Taiwan is listed as "Other non-specified areas"
+asfr$country[asfr$country == "Other non-specified areas"] <- 'Taiwan'
+asfr$iso3[asfr$country == 'Taiwan'] <- countrycode('Taiwan', 'country.name', 'iso3c')
+
+asfr <- dplyr::filter(asfr, !is.na(iso3))
+
+# Old
+# asfr <-
+#     asfr %>%
+#     filter(iso_code %in% iso3$country.code) %>% # Strip regional values (e.g. "Africa")
+#     left_join(iso3[, -1], by=c('iso_code'='country.code')) # Add iso3 codes
 
 # Breastfeeding
 
-breastfeeding2010_2015 = read_excel('data-raw/IYCF website with aggregates Nov 2015 submitted_653edc.xlsx', skip = 8)
-breastfeeding2010_2015 <- breastfeeding2010_2015[c(2:5, 16:17, 20:21, 24:25, 28:29, 32:33, 43:44, 56:57)]
+breastfeeding = read_excel('data-raw/IYCF website with aggregates Nov 2015 submitted_653edc.xlsx', skip = 8)
+breastfeeding <- breastfeeding[c(2:5, 16:17, 20:21, 24:25, 28:29, 32:33, 43:44, 56:57)]
 
-names(breastfeeding2010_2015) <-
+names(breastfeeding) <-
     c(
         'iso3',
         'country',
@@ -89,11 +129,228 @@ names(breastfeeding2010_2015) <-
         'year_min_freq',
         'percent_min_freq'
     )
-breastfeeding2010_2015 <- filter(breastfeeding2010_2015, iso3 %in% iso3$iso3)
+breastfeeding <- filter(breastfeeding, iso3 %in% iso3$iso3)
+
+# Contraceptive use
+
+contraception_any <- read_excel('data-raw/Table_Model-based_estimates_Countries_Run20150423.xls', sheet = 3, skip = 3)
+contraception_modern <- read_excel('data-raw/Table_Model-based_estimates_Countries_Run20150423.xls', sheet = 4, skip = 3)
+contraception_traditional <- read_excel('data-raw/Table_Model-based_estimates_Countries_Run20150423.xls', sheet = 5, skip = 3)
+
+contraception_any$type <- 'any'
+contraception_modern$type <- 'modern'
+contraception_traditional$type <- 'traditional'
+
+contraception <- rbind(contraception_any, contraception_modern, contraception_traditional)
+
+names(contraception) <- c('country', 'country.code', 'estimate', paste0('bc', 1970:2030), 'type')
+contraception <- dplyr::filter(contraception, estimate=='MEDIAN ESTIMATE')
+contraception$estimate <- NULL
+contraception <- left_join(contraception, iso3[-1])
+contraception$country.code <- NULL
+contraception <- contraception[c('country', 'iso3', 'type', paste0('bc', 1970:2030))]
+
+country_centroids <-
+    read_tsv('data-raw/country_centroids/country_centroids_primary.csv') %>%
+    filter(FIPS10 != 'GZ') %>% # To avoid duplicated iso3 code, filter out Gaza Strip; use West Bank instead
+    left_join(iso3, by=c('ISO3136'='iso2')) %>%
+    dplyr::select(name, iso3, LAT, LONG)
+
+# Infant mortality
+
+infantmortality <-
+    read_excel('data-raw/WPP2015_MORT_F01_1_IMR_BOTH_SEXES.XLS', sheet = 1, skip = 16) %>%
+    left_join(iso3[c('country.code', 'iso3')], by=c('Country code' = 'country.code')) %>%
+    filter(!is.na(iso3)) %>%
+    select(country = `Major area, region, country or area *`, iso3, `1950-1955`:`2010-2015`)
+names(infantmortality) <- c('country', 'iso3', paste0('im', seq(1950, 2010, 5)))
+
+# Child mortality
+
+u5mortality <-
+    read_excel('data-raw/WPP2015_MORT_F01_2_Q5_BOTH_SEXES.XLS', sheet = 1, skip = 16) %>%
+    left_join(iso3[c('country.code', 'iso3')], by=c('Country code' = 'country.code')) %>%
+    filter(!is.na(iso3)) %>%
+    select(country = `Major area, region, country or area *`, iso3, `1950-1955`:`2010-2015`)
+names(u5mortality) <- c('country', 'iso3', paste0('u5m', seq(1950, 2010, 5)))
+
+# Age at first birth
+
+age_first_birth <- read_excel('data-raw/TABLE A.6. Mean age at first birth.xlsx', skip=2, na='..')
+age_first_birth <- age_first_birth[1:5]
+age_first_birth <-
+    age_first_birth %>%
+    left_join(iso3[c('iso3', 'country.code')], by = c('ISO code' = 'country.code')) %>%
+    select(country = Country, iso3, period = Period, year_original = Year, age_first_birth = `Mean age at first birth`) %>%
+    filter(!is.na(iso3))
+
+# Recode year_original to avoid two year ranges, e.g., 1975-1976
+# Choose either first or last year of range
+# Choose year ending in 0 or 5, if possible, 1975-1976 -> 1975
+
+age_first_birth <-
+    within(age_first_birth, {
+        year <- year_original
+        year[year == '1975-1976'] <- '1975'
+        year[year == '1976-1977'] <- '1976'
+        year[year == '1977-1978'] <- '1978'
+        year[year == '1979-1980'] <- '1980'
+        year[year == '1980-1981'] <- '1980'
+        year[year == '1981-1982'] <- '1982'
+        year[year == '1988-1989'] <- '1988'
+        year[year == '1989-1990'] <- '1990'
+        year[year == '1990-1991'] <- '1990'
+        year[year == '1992-1993'] <- '1993'
+        year[year == '1994-1995'] <- '1995'
+        year[year == '1995-1996'] <- '1995'
+        year[year == '1996-1997'] <- '1997'
+        year[year == '1998-1999'] <- '1999'
+        year[year == '2000-2001'] <- '2000'
+        year[year == '2003-2004'] <- '2004'
+        year[year == '2005-2006'] <- '2005'
+        year[year == '2006-2007'] <- '2007'
+        year[year == '2007-2008'] <- '2008'
+        year[year == '2008-2009'] <- '2009'
+        year[year == '2009-2010'] <- '2010'
+        year[year == '2010-2011'] <- '2010'
+        year <- as.integer(year)
+    })
+
+# CIRI human rights data
+# -999 Missing; -77 collapse of political authority; -66 e.g., occupation
+
+# Several countries have same UNCTRY but different CTRY, e.g.
+# Czechoslovakia (1981-1992) and Czech Republic (1993-2011)
+# Yemen Arab Republic (1981-1990) and Yemen (1991-2011)
+# Serbia and Montenegro, Yugoslavia, "Yugoslavia, Federal Republic of"
+
+# Four countries do not have UNCTRY:
+# Kosovo, Soviet Union, Taiwan, Yemen, South
+
+ciri <-
+    read.csv('data-raw/CIRI.csv', stringsAsFactors=FALSE, na.strings=c('-999', '-66', '-77')) %>%
+    filter(!is.na(UNCTRY)) %>%
+    left_join(iso3[c('country.code', 'iso3')], by=c('UNCTRY'='country.code')) %>%
+    select(iso3, YEAR, WECON, WOPOL) %>%
+    filter(!is.na(iso3))
+
+# Another gender inequality measure
+gggi = read.csv('data-raw/GGGI_2014.csv', stringsAsFactors=FALSE)
+
+# Gender empowerment measure 2009
+gem = read.csv('data-raw/gem2009.csv', stringsAsFactors=FALSE)
+gem$country.code <- NULL
+gem <- gem[c('country', 'iso3', 'gem')]
+
+# Global tobacco production
+
+# land_use <- read_excel('data-raw/Growing-Map.xlsx', sheet = 2, skip = 5)[2:5]
+# names(land_use) <- c('country', 'iso3', 'land_use', 'arable_land', 'percent_land_use')
+
+fao_codes <- read_csv('data-raw/FAO country codes.csv')
+production <-
+    read_csv('data-raw/FAO tobacco production.csv', n_max = 42268) %>%
+    left_join(fao_codes[c('ISO3', 'FAOSTAT')], by=c('Country Code' = 'FAOSTAT')) %>%
+    select(iso3 = ISO3, 5:6, 10:14)
+
+land <-
+    read_csv('data-raw/FAO land area.csv') %>%
+    left_join(fao_codes[c('ISO3', 'FAOSTAT')], by=c('Country Code' = 'FAOSTAT')) %>%
+    select(iso3 = ISO3, 7,8, 10:14)
+
+# Population by country by year, from 1960 to 2015
+# Data from World Bank
+# http://data.worldbank.org/indicator/SP.POP.TOTL
+
+population <- read_csv('data-raw/API_SP.POP.TOTL_DS2_en_csv_v2.csv', skip = 4)
+population$`2016` <- NULL # No data for 2016
+population$X62 <- NULL # X62 due to comma at end of header row
+
+# Country economic data by year, from 1980 - 2021 (Estimated data for very recent and future years)
+# From World Economic Outlook database 2016
+# http://www.imf.org/external/pubs/ft/weo/2016/02/weodata/WEOOct2016all.xls
+
+weo <- read_tsv('data-raw/WEOOct2016all.xls', na = c('', 'NA', 'n/a', '--'), n_max = 8404)
+weo <- dplyr::rename(weo, iso3 = ISO) # To match other data tables
+
+# Create table of subject codes, descriptors, and notes
+subject_code_table <-
+    weo %>%
+    dplyr::filter(iso3 == 'AFG') %>%
+    dplyr::select(`WEO Subject Code`, `Subject Descriptor`, `Subject Notes`, `Units`, `Scale`)
+
+
+# Global Burden of Disease smoking prevalence 1980-2015 -------------------
+
+# http://ghdx.healthdata.org/record/ihme-data/gbd-2015-smoking-prevalence-1980-2015
+
+gbd2015smoking <-
+    read_csv('data-raw/IHME_GBD_2015_SMOKING_PREVALENCE_1980_2015_1/IHME_GBD_2015_SMOKING_PREVALENCE_1980_2015_Y2017M04D05.CSV') %>%
+    rename(year = year_id) %>%
+    mutate(
+        iso3 = countrycode(location_name, origin='country.name', destination='iso3c'),
+        age_center = 5 * age_group_id - 23
+    ) %>%
+    dplyr::filter(
+        !is.na(iso3),
+        age_group_name != 'All Ages'
+    ) %>%
+    dplyr::select(
+        -age_group_id,
+        -location_id,
+        -sex_id,
+        -measure
+    ) %>%
+    relocate(iso3) %>%
+    relocate(age_center, .after = age_group_name) %>%
+    relocate(year, .after = location_name)
+
+
 
 # Write data
-use_data(iso3, dev, tfr2015, tfr2015long, asfr2015, breastfeeding2010_2015, overwrite = T)
+# file.remove(file.path('data', list.files('data'))) # First clear the data directory
 
+use_data(
+    iso3,
+    developing,
+    tfr,
+    tfrlong,
+    asfr,
+    breastfeeding,
+    smoking_age_sex,
+    ng_smoking,
+    contraception,
+    country_centroids,
+    infantmortality,
+    u5mortality,
+    age_first_birth,
+    ciri,
+    gggi,
+    gem,
+    production,
+    land,
+    population,
+    weo,
+    gbd2015smoking,
+    overwrite = F
+)
+
+stop('Done')
+
+# Quick comparison of gni values
+gni_weo_long <-
+    weo %>%
+    dplyr::filter(`WEO Subject Code` == 'PPPPC') %>%
+    dplyr::select(iso3, `1980`:`2016`) %>%
+    tidyr::gather(key = year, value = PPPPC, `1980`:`2016`)
+
+gni_long <-
+    gni %>%
+    dplyr::select(`Country Code`, `1990`:`2014`) %>%
+    tidyr::gather(key = year, value = gni, `1990`:`2014`) %>%
+    left_join(gni_weo_long, by = c('Country Code' = 'iso3', 'year' = 'year'))
+
+ggplot(gni_long, aes(log(gni), log(PPPPC))) + geom_point()
 
 # World Bank data
 
@@ -155,19 +412,6 @@ lat.long = rbind(lat.long, list('TW', 'TWN', taiwan$latitude, taiwan$longitude))
 dev$gbd.super.region.2 = as.character(dev$gbd.super.region)
 dev$gbd.super.region.2[dev$region=='Oceania'] = 'Oceania'
 dev$gbd.super.region.2[dev$gbd.super.region.2=='Southeast Asia-East Asia-Oceania'] = 'Southeast Asia-East Asia'
-
-# Our reference smoking data
-
-age_sex_prev = read.csv('Data/UW_Age_sex tobacco prevalence.csv', stringsAsFactors=FALSE)
-
-# http://ghdx.healthdata.org/record/global-smoking-prevalence-and-cigarette-consumption-1980-2012
-# http://www.healthdata.org/sites/default/files/files/data_for_download/2014/Tobacco_January_2014_data.xlsx
-
-ng_age = read.csv("Data/prevalence.age.csv", stringsAsFactors=FALSE)
-ng <- read.delim("Data/Ng_Tobacco_January_2014_data.txt", quote="", stringsAsFactors=FALSE)
-ng = rename(ng, iso3=iso)
-ng = merge(ng, dev[,-3], by='iso3') # remove country from dev
-
 
 # Numerous data sets compiled by Melissa
 d = read.delim('Data/Data collaboration/Data_collaboration_hagen.tsv', na.strings=c('.', '', ' ', '?'), stringsAsFactors=FALSE)
@@ -252,12 +496,6 @@ u5mr.long = left_join(u5mr.1, u5mr.2)
 u5mr.long$year = as.integer(u5mr.long$year)
 u5mr.long$lag = as.integer(u5mr.long$lag)
 
-# Age at first birth
-
-age_first_birth <- read_excel('Data/TABLE A.6. Mean age at first birth.xlsx', skip=2, na='..')
-age_first_birth <- age_first_birth[1:5]
-age_first_birth <- rename(age_first_birth, country.code=`ISO code`)
-age_first_birth <- left_join(age_first_birth, iso[c('iso3', 'country.code')], by='country.code')
 
 # merge with age_sex_prev
 
@@ -276,32 +514,6 @@ asp$gbd.super.region = factor(asp$gbd.super.region)
 asp$gbd.super.region.2 = factor(asp$gbd.super.region.2)
 asp$iso3 = factor(asp$iso3)
 asp$sex = factor(asp$sex)
-
-# CIRI human rights data
-# -999 Missing; -77 collapse of political authority; -66 e.g., occupation
-
-# Several countries have same UNCTRY but different CTRY, e.g.
-# Czechoslovakia (1981-1992) and Czech Republic (1993-2011)
-# Yemen Arab Republic (1981-1990) and Yemen (1991-2011)
-# Serbia and Montenegro, Yugoslavia, "Yugoslavia, Federal Republic of"
-
-# Four countries do not have UNCTRY:
-# Kosovo, Soviet Union, Taiwan, Yemen, South
-
-ciri = read.csv('Data/CIRI.csv', stringsAsFactors=FALSE, na.strings=c('-999', '-66', '-77'))
-
-ciri.2 = ciri[!is.na(ciri$UNCTRY),c('YEAR', 'UNCTRY', 'WECON', 'WOPOL')]
-ciri.2 = left_join(ciri.2, iso[,-1], by=c('UNCTRY'='country.code'))
-ciri.2010 = na.omit(ciri.2[ciri.2$YEAR==2010,])
-ciri.2011 = na.omit(ciri.2[ciri.2$YEAR==2011,-(1:2)])
-# tmp = melt(ciri.2, id.vars=c('UNCTRY', 'YEAR', 'iso3'), measure.vars=c('WECON', 'WOPOL'))
-# ciri.wide = dcast(tmp, UNCTRY ~ variable + YEAR) # Two rows have NA countries
-
-# Another gender inequality measure
-gggi = read.csv('Data/GGGI_2014.csv', stringsAsFactors=FALSE)
-
-# Gender empowerment measure 2009
-gem = read.csv('Data/gem2009.csv', stringsAsFactors=FALSE)
 
 # Add gender inequality measures to ng
 ng = left_join(ng, ciri.2011)

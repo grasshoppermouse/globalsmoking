@@ -1,0 +1,11 @@
+﻿Global Burden of Disease Study 2015 (GBD 2015) Smoking Prevalence 1980-2015
+
+The Global Burden of Disease Study 2015 (GBD 2015), coordinated by the Institute for Health Metrics and Evaluation (IHME), estimated the burden of diseases, injuries, and risk factors at the global, regional, national, territorial, and, for a subset of countries, subnational level.
+
+As part of this study, estimates for daily smoking prevalence and smoking-attributable mortality and disease burden, as measured by disability-adjusted life years (DALYs), were produced by sex, age group, and year for 195 countries and territories. Estimates for deaths and DALYs (1990-2015) are available from the GBD Results Tool. Files available in this record include daily smoking prevalence (1980-2015) and annualized rate of change estimates. Study results were published in The Lancet in April 2017 in "Smoking prevalence and attributable disease burden in 195 countries and territories, 1990–2015: a systematic analysis from the Global Burden of Disease Study 2015."
+
+Suggested Citation:
+Global Burden of Disease Study 2015. Global Burden of Disease Study 2015 (GBD 2015) Smoking Prevalence 1980-2015. Seattle, United States: Institute for Health Metrics and Evaluation (IHME), 2017.
+
+Terms and Conditions:
+http://www.healthdata.org/about/terms-and-conditions
