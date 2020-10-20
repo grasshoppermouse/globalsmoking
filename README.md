@@ -8,4 +8,4 @@ Install devtools:
 
 Install globalsmoking:
 
-remotes::install_github("grasshoppermouse/globalsmoking")`
+`remotes::install_github("grasshoppermouse/globalsmoking")`
